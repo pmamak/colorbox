@@ -70,7 +70,8 @@
 		left: false,
 		right: false,
 		fixed: false,
-		data: undefined
+		data: undefined,
+		ajaxCache: false
 	},
 	
 	// Abstracting the HTML and event identifiers for easy rebranding
@@ -961,11 +962,13 @@
 				photo.src = href;
 			}, 1);
 		} else if (href) {
+			$.ajaxSetup({ cache: settings.ajaxCache });
 			$loadingBay.load(href, settings.data, function (data, status) {
 				if (request === requests) {
 					prep(status === 'error' ? $tag(div, 'Error').html(settings.xhrError) : $(this).contents());
 				}
 			});
+			$.ajaxSetup({ cache: null });
 		}
 	}
 		
