@@ -217,7 +217,7 @@
 		}
 	}
 
-	function trigger(event, callback) {
+	function trigger(event, callback, param) {
 		// for external use
 		$(document).trigger(event);
 
@@ -225,7 +225,7 @@
 		$events.trigger(event);
 
 		if ($.isFunction(callback)) {
-			callback.call(element);
+			callback.call(element, param);
 		}
 	}
 
@@ -474,11 +474,11 @@
 					publicMethod.prev();
 				});
 				$close.click(function () {
-					publicMethod.close();
+					publicMethod.close('close_click');
 				});
 				$overlay.click(function () {
 					if (settings.overlayClose) {
-						publicMethod.close();
+						publicMethod.close('overlay_click');
 					}
 				});
 				
@@ -487,7 +487,7 @@
 					var key = e.keyCode;
 					if (open && settings.escKey && key === 27) {
 						e.preventDefault();
-						publicMethod.close();
+						publicMethod.close('esc_keydown');
 					}
 					if (open && settings.arrowKey && $related[1] && !e.altKey) {
 						if (key === 37) {
@@ -985,7 +985,7 @@
 	};
 
 	// Note: to use this within an iframe use the following format: parent.$.fn.colorbox.close();
-	publicMethod.close = function () {
+	publicMethod.close = function (reason) {
 		if (open && !closing) {
 			
 			closing = true;
@@ -1008,7 +1008,7 @@
 				
 				setTimeout(function () {
 					closing = false;
-					trigger(event_closed, settings.onClosed);
+					trigger(event_closed, settings.onClosed, reason);
 				}, 1);
 			});
 		}
