@@ -46,6 +46,7 @@
 		imgError: "This image failed to load.",
 
 		open: false,
+		trapFocus: true,
 		returnFocus: true,
 		reposition: true,
 		loop: true,
@@ -378,8 +379,7 @@
 				
 				// Confine focus to the modal
 				// Uses event capturing that is not supported in IE8-
-				if (document.addEventListener) {
-
+				if (document.addEventListener && settings.trapFocus) {
 					document.addEventListener('focus', trapFocus, true);
 					
 					$events.one(event_closed, function () {
